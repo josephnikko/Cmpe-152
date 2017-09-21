@@ -1,0 +1,18 @@
+Frontend
+PascalToken.h: WHEN OTHERWISE RIGHT_ARROW PT_WHEN PT_OTHERWISE PT_RIGHT ARROW
+PascalToken.cpp: "WHEN" "OTHERWISE" "=>"
+PascalSpecialSymbolToken.cpp
+
+Intermediate
+ICodeNodeImpl.h: WHEN WHEN_BRANCH OTHERWISE
+ICodeNodeImpl.cpp: NT_WHEN NT_WHEN_BRANCH NT_OTHERWISE
+
+Frontend
+WhenStatementParser.h
+WhenStatementParser.cpp
+StatementParser.cpp: PT_WHEN
+
+Backend
+WhenExecutor.h
+WhenExecutor.cpp
+StatementExecutor.cpp: NT_WHEN NT_WHEN_BRANCH NT_OTHERWISE
