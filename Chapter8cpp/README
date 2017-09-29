@@ -14,12 +14,16 @@ make
 
     Compile all the files and generate an executable file.
 
-make execute src=hello.pas
+make execute src=when.txt
 
     Run the Pascal interpreter to execute 
-    source file hello.pas
+    source file when.txt
 
-make compile src=hilbert.pas
+make compile src=when.txt
 
     Run the Pascal compiler to generate object code 
-    for source file hilbert.pas
+    for source file when.txt
+
+
+
+Steven: Added files when.txt and whenerrors.txt
