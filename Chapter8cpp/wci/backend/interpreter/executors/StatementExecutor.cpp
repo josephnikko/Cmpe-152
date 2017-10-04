@@ -2,7 +2,7 @@
  * <h1>StatementExecutor</h1>
  *
  * <p>Execute a statement.</p>
- *
+ * Edited by Steven Nam D. Le
  * <p>Copyright (c) 2017 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
  */
@@ -12,6 +12,7 @@
 #include "LoopExecutor.h"
 #include "IfExecutor.h"
 #include "SelectExecutor.h"
+#include "WhenExecutor.h"                                                       //<------------------ CHANGES MADE HERE
 #include "../Executor.h"
 #include "../RuntimeError.h"
 #include "../../../DataValue.h"
@@ -71,7 +72,25 @@ DataValue *StatementExecutor::execute(ICodeNode *node)
             SelectExecutor select_executor(this);
             return select_executor.execute(node);
         }
+                                                                         //<------------------ CHANGES MADE HERE
+        case NT_WHEN:
+        {
+            WhenExecutor when_executor(this);
+            return when_executor.execute(node);
+        }
+/*
+        case NT_WHEN_BRANCH:
+        {
+            When_BranchExecutor when_executor(this);
+            return when_branch_executor.execute(node);
+        }
 
+        case NT_OTHERWISE:
+        {
+            OtherwiseExecutor when_executor(this);
+            return otherwise_executor.execute(node);
+        }
+*/
         case NT_NO_OP: return nullptr;
 
         default:
