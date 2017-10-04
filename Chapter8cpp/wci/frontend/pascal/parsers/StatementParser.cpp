@@ -15,6 +15,7 @@
 #include "ForStatementParser.h"
 #include "IfStatementParser.h"
 #include "CaseStatementParser.h"
+#include "WhenStatementParser.h"
 #include "../PascalParserTD.h"
 #include "../PascalToken.h"
 #include "../PascalError.h"
@@ -108,10 +109,6 @@ ICodeNode *StatementParser::parse_statement(Token *token) throw (string)
             WhenStatementParser when_parser(this);
             statement_node = when_parser.parse_statement(token);
             break;
-
-
-
-
         }
 
         default:

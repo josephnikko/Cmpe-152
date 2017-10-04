@@ -78,7 +78,7 @@ DataValue *StatementExecutor::execute(ICodeNode *node)
             WhenExecutor when_executor(this);
             return when_executor.execute(node);
         }
-
+/*
         case NT_WHEN_BRANCH:
         {
             When_BranchExecutor when_executor(this);
@@ -90,7 +90,7 @@ DataValue *StatementExecutor::execute(ICodeNode *node)
             OtherwiseExecutor when_executor(this);
             return otherwise_executor.execute(node);
         }
-
+*/
         case NT_NO_OP: return nullptr;
 
         default:

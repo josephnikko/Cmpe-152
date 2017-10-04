@@ -29,7 +29,7 @@ enum class PascalTokenType
     AND, ARRAY, BEGIN, CASE, CONST, DIV, DO, DOWNTO, ELSE, END,
     FILE, FOR, FUNCTION, GOTO, IF, IN, LABEL, MOD, NIL, NOT,
     OF, OR, PACKED, PROCEDURE, PROGRAM, RECORD, REPEAT, SET,
-    THEN, TO, TYPE, UNTIL, VAR, WHILE, WITH, WHEN, OTHERWISE
+    THEN, TO, TYPE, UNTIL, VAR, WHILE, WITH, WHEN, OTHERWISE,
 
     // Special symbols.
     PLUS, MINUS, STAR, SLASH, COLON_EQUALS,
@@ -85,7 +85,7 @@ constexpr PascalTokenType PT_WITH = PascalTokenType::WITH;
 
 //NEW PASCAL TOKEN TYPES
 constexpr PascalTokenType PT_WHEN = PascalTokenType::WHEN;
-constexpr PascalTokenType PT_OTHERWISE = PascalToken::OTHERWISE;
+constexpr PascalTokenType PT_OTHERWISE = PascalTokenType::OTHERWISE;
 
 constexpr PascalTokenType PT_PLUS = PascalTokenType::PLUS;
 constexpr PascalTokenType PT_MINUS = PascalTokenType::MINUS;
@@ -113,7 +113,7 @@ constexpr PascalTokenType PT_RIGHT_BRACE = PascalTokenType::RIGHT_BRACE;
 constexpr PascalTokenType PT_UP_ARROW = PascalTokenType::UP_ARROW;
 constexpr PascalTokenType PT_DOT_DOT = PascalTokenType::DOT_DOT;
 //NEW TOKEN TYPE FOR NEW WHEN STATEMENT
-constexpr PascalTokenType PT_RIGHT_ARROW;
+constexpr PascalTokenType PT_RIGHT_ARROW = PascalTokenType::RIGHT_ARROW;
 
 constexpr PascalTokenType PT_IDENTIFIER = PascalTokenType::IDENTIFIER;
 constexpr PascalTokenType PT_INTEGER = PascalTokenType::INTEGER;
