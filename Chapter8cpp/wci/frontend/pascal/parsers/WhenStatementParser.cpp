@@ -3,7 +3,7 @@
  *
  * <p>Parse a Pascal WHEN statement.</p>
  *
- * Edited by Steven Nam D. Le
+ * <p>Copyright (c) 2017 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
  */
 #include <string>
@@ -29,14 +29,14 @@ using namespace wci::intermediate::icodeimpl;
 
 bool WhenStatementParser::INITIALIZED = false;
 
-set<PascalTokenType> WhenStatementParser::RIGHT_ARROW_SET;                     //<-- Edit this
+set<PascalTokenType> WhenStatementParser::RIGHT_ARROW_SET;
 
-void WhenStatementParser::initialize()                                  //<-- Edit this
+void WhenStatementParser::initialize()
 {
     if (INITIALIZED) return;
 
     RIGHT_ARROW_SET = StatementParser::STMT_START_SET;
-    RIGHT_ARROW_SET.insert(PascalTokenType::THEN);                             //<-- Edit this. See Lab Slides 09/12/17
+    RIGHT_ARROW_SET.insert(PascalTokenType::RIGHT_ARROW);
 
     set<PascalTokenType>::iterator it;
     for (it  = StatementParser::STMT_FOLLOW_SET.begin();
@@ -59,47 +59,86 @@ ICodeNode *WhenStatementParser::parse_statement(Token *token) throw (string)
 {
     token = next_token(token);  // consume the WHEN
 
-    // Create an WHEN node.
+    // Create a WHEN node.
     ICodeNode *when_node =
             ICodeFactory::create_icode_node((ICodeNodeType) NT_WHEN);
-
-
-    // Parse the expression.
-    // The WHEN node adopts the expression subtree as its first child.
-    ExpressionParser expression_parser(this);
-    when_node->add_child(expression_parser.parse_statement(token));
-
-    // Synchronize at the THEN.
-    token = synchronize(RIGHT_ARROW_SET);
-    if (token->get_type() == (TokenType) PT_RIGHT_ARROW) //EDIT THIS PT_RIGHT_ARROW
+     
+    // Create a WHEN_BRANCH node.
+    ICodeNode *when_branch_node =
+            ICodeFactory::create_icode_node((ICodeNodeType) NT_WHEN_BRANCH);       
+            
+    // Loop to parse each WHEN_BRANCH until the OTHERWISE token
+    // or the end of the source file.
+    
+    while ((token != nullptr) &&
+           (token->get_type() != (TokenType) PT_OTHERWISE))
     {
-        token = next_token(token);  // consume the THEN
+        // The WHEN node adopts the WHEN_BRANCH subtree.
+        when_node->add_child(when_branch_node);
+        
+        // Parse the expression.
+   		// The WHEN_BRANCH node adopts the expression subtree as its first child.
+    	ExpressionParser expression_parser(this);
+    	when_branch_node->add_child(expression_parser.parse_statement(token));
+		
+		// Synchronize at the RIGHT_ARROW.
+  	  	token = synchronize(RIGHT_ARROW_SET);
+    	if (token->get_type() == (TokenType) PT_RIGHT_ARROW)
+    	{
+   		     token = next_token(token);  // consume the RIGHT_ARROW
+   		}
+  /*	else {
+        	error_handler.flag(token, MISSING_OF, this);
+    	}
+	*/	
+		
+		// Parse the statement.
+		StatementParser statement_parser(this);
+		when_branch_node->add_child(statement_parser.parse_statement(token));
+		
+        token = current_token();
+        TokenType token_type = token->get_type();
+
+        // Look for the semicolon between WHEN branches.
+        if (token_type == (TokenType) PT_SEMICOLON)
+        {
+            token = next_token(token);  // consume the ;
+        }
+
+        // If at the start of the next constant, then missing a semicolon.
+        else if (CONSTANT_START_SET.find((PascalTokenType) token_type)
+                      != CONSTANT_START_SET.end())
+        {
+            error_handler.flag(token, MISSING_SEMICOLON, this);
+        }
     }
 
-    else {
-        error_handler.flag(token, MISSING_RIGHT_ARROW, this); //<--------HAS THIS BEEN CREATED?
-    }
+	// Create an OTHERWISE node.
+    ICodeNode *otherwise_node =
+            ICodeFactory::create_icode_node((ICodeNodeType) NT_OTHERWISE);
 
-    // Parse the THEN statement.                                           <-- EDIT THIS
-    // The WHEN node adopts the statement subtree as its second child.
-    StatementParser statement_parser(this);
-    when_node->add_child(statement_parser.parse_statement(token));
-    token = current_token();
-
-    // Look for an ELSE.                                                   <-- EDIT THIS
-    if (token->get_type() == (TokenType) PT_OTHERWISE) //EDIT THIS
+	token = next_token(token);	//consume OTHERWISE
+	
+	// Parse the statement.
+	StatementParser otherwise_statement_parser(this);
+	otherwise_node->add_child(otherwise_statement_parser.parse_statement(token));
+	
+	//token = current_token();
+	
+	// Look for the END token.
+    if (token->get_type() == (TokenType) PT_END)
     {
-        token = next_token(token);  // consume the THEN
-
-        // Parse the ELSE statement.
-        // The WHEN node adopts the statement subtree as its third child.
-        when_node->add_child(statement_parser.parse_statement(token));
+        token = next_token(token);  // consume END
     }
-        else {
-        error_handler.flag(token, MISSING_OTHERWISE, this); //<--------HAS THIS BEEN CREATED?
+    else
+    {
+        error_handler.flag(token, MISSING_END, this);
     }
 
     return when_node;
 }
+
+
+
 
 }}}}  // namespace wci::frontend::pascal::parsers
