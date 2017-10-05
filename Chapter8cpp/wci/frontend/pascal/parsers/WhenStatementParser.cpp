@@ -106,11 +106,12 @@ ICodeNode *WhenStatementParser::parse_statement(Token *token) throw (string)
         }
 
         // If at the start of the next constant, then missing a semicolon.
+        /*
         else if (CONSTANT_START_SET.find((PascalTokenType) token_type)
                       != CONSTANT_START_SET.end())
         {
             error_handler.flag(token, MISSING_SEMICOLON, this);
-        }
+        } */
     }
 
 	// Create an OTHERWISE node.
@@ -123,7 +124,7 @@ ICodeNode *WhenStatementParser::parse_statement(Token *token) throw (string)
 	StatementParser otherwise_statement_parser(this);
 	otherwise_node->add_child(otherwise_statement_parser.parse_statement(token));
 	
-	//token = current_token();
+	token = current_token();
 	
 	// Look for the END token.
     if (token->get_type() == (TokenType) PT_END)

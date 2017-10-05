@@ -6,6 +6,7 @@
  * Created by Steven Nam D. Le
  */
 #include <vector>
+#include <map>
 #include "WhenExecutor.h"
 #include "StatementExecutor.h"
 #include "ExpressionExecutor.h"
@@ -42,11 +43,10 @@ DataValue *WhenExecutor::execute(ICodeNode *node)
     // Get the WHEN node's children.
     vector<ICodeNode *> when_children = node->get_children();
 
-    /*
-    // Evaluate the WHEN expression.
+
     ExpressionExecutor expression_executor(this);
     DataValue *when_value = expression_executor.execute(expr_node);
-    */
+    
     
     // If there is a selection, execute the WHEN_BRANCH's statement.
     ICodeNode *statement_node = (*jump_table)[when_value->i];

@@ -9,9 +9,11 @@
 #ifndef WHENEXECUTOR_H_
 #define WHENEXECUTOR_H_
 
+#include <map>
 #include "StatementExecutor.h"
 #include "../../../DataValue.h"
 #include "../../../intermediate/ICodeNode.h"
+
 
 namespace wci { namespace backend { namespace interpreter { namespace executors {
 
@@ -19,6 +21,10 @@ using namespace std;
 using namespace wci;
 using namespace wci::backend::interpreter;
 using namespace wci::intermediate;
+
+typedef map<int, ICodeNode *> JumpTable;
+typedef map<ICodeNode *, JumpTable *> JumpCache;
+
 
 class WhenExecutor : public StatementExecutor
 {
@@ -35,6 +41,15 @@ public:
      * @return nullptr.
      */
     DataValue *execute(ICodeNode *node);
+private:
+    static JumpCache jump_cache;
+
+    /**
+     * Create a jump table for a SELECT node.
+     * @param node the SELECT node.
+     * @return the jump table.
+     */
+    JumpTable *create_jump_table(ICodeNode *node);
 };
 
 }}}}  // namespace wci::backend::interpreter::executors

@@ -19,6 +19,7 @@ SRCS =  Pascal.cpp \
         wci/backend/interpreter/executors/LoopExecutor.cpp \
         wci/backend/interpreter/executors/SelectExecutor.cpp \
         wci/backend/interpreter/executors/StatementExecutor.cpp \
+        wci/backend/interpreter/executors/WhenExecutor.cpp \
         wci/frontend/FrontendFactory.cpp \
         wci/frontend/Parser.cpp \
         wci/frontend/Scanner.cpp \
@@ -37,6 +38,7 @@ SRCS =  Pascal.cpp \
         wci/frontend/pascal/parsers/IfStatementParser.cpp \
         wci/frontend/pascal/parsers/RepeatStatementParser.cpp \
         wci/frontend/pascal/parsers/StatementParser.cpp \
+        wci/frontend/pascal/parsers/WhenStatementParser.cpp \
         wci/frontend/pascal/parsers/WhileStatementParser.cpp \
         wci/frontend/pascal/tokens/PascalErrorToken.cpp \
         wci/frontend/pascal/tokens/PascalNumberToken.cpp \
