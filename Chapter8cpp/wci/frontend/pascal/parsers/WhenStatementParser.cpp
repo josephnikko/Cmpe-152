@@ -119,6 +119,12 @@ ICodeNode *WhenStatementParser::parse_statement(Token *token) throw (string)
             ICodeFactory::create_icode_node((ICodeNodeType) NT_OTHERWISE);
 
 	token = next_token(token);	//consume OTHERWISE
+
+        token = synchronize(RIGHT_ARROW_SET);
+        if (token->get_type() == (TokenType) PT_RIGHT_ARROW)
+        {
+             token = next_token(token);  // consume the RIGHT_ARROW
+        }
 	
 	// Parse the statement.
 	StatementParser otherwise_statement_parser(this);
