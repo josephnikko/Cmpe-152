@@ -42,8 +42,9 @@ DataValue *WhenExecutor::execute(ICodeNode *node)
 
     // Get the WHEN node's children.
     vector<ICodeNode *> when_children = node->get_children();
+    //ICodeNode *expr_node = select_children[0];
 
-
+/*
     ExpressionExecutor expression_executor(this);
     DataValue *when_value = expression_executor.execute(expr_node);
     
@@ -55,6 +56,7 @@ DataValue *WhenExecutor::execute(ICodeNode *node)
         StatementExecutor statement_executor(this);
         statement_executor.execute(statement_node);
     }
+    */
 
     ++execution_count;  // count the WHEN statement itself
     return nullptr;
@@ -76,25 +78,26 @@ JumpTable *WhenExecutor::create_jump_table(ICodeNode *node)
         if (i != when_children.size())
         {
             ICodeNode *branch_node = when_children[i];
-            ICodeNode *expressions_node = branch_node->get_children()[0];
-            ICodeNode *statement_node = branch_node->get_children()[1];
-        }
+            ICodeNode *expression_node = branch_node->get_children()[0]; //BUG
+            ICodeNode *statement_node = branch_node->get_children()[1]; //BUG
+            // Loop over the expressions children of the branch's CONSTANTS_NODE.
+            vector<ICodeNode *> expressions_list = expression_node->get_children(); //BUG
+            for (ICodeNode *expression_node : expressions_list)
+            {
+                // Create a jump table entry. //Need to compare with boolean values?
+                NodeValue *node_value =  expression_node->get_attribute((ICodeKey) VALUE);
+                DataValue *data_value =  node_value->value;
+                (*jump_table)[data_value->i] = statement_node;  //BUG
+            }
+        }/*
         else //OTHERWISE
         {
             ICodeNode *branch_node = when_children[i];
-            ICodeNode *statement_node = branch_node->get_children()[0];
+            //ICodeNode *statement_node = branch_node->get_children()[0]; //BUG
         }
-
-        // Loop over the expressions children of the branch's CONSTANTS_NODE.
-        vector<ICodeNode *> expressions_list = expressions_node->get_children();
-        for (ICodeNode *expressions_node : expressions_list)
-        {
-            // Create a jump table entry.               //Need to compare with boolean values?
-            NodeValue *node_value =
-                    expressions_node->get_attribute((ICodeKey) VALUE);
-            DataValue *data_value =  node_value->value;
-            (*jump_table)[data_value->i] = statement_node;
-        }
+*/
+        
+        
     }
 
     return jump_table;
