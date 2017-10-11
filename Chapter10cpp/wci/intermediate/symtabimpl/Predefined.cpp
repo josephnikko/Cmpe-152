@@ -73,11 +73,11 @@ void Predefined::initialize_types(SymTabStack *symtab_stack)
     real_id->set_typespec(real_type);
 
     // Type imaginary.
-    real_id = symtab_stack->enter_local("imaginary");
-    real_type = TypeFactory::create_type((TypeForm) TF_SCALAR);
-    real_type->set_identifier(imag_id);
-    real_id->set_definition((Definition) DF_TYPE);
-    real_id->set_typespec(imag_type);
+    imag_id = symtab_stack->enter_local("imaginary");
+    imag_type = TypeFactory::create_type((TypeForm) TF_SCALAR);
+    imag_type->set_identifier(imag_id);
+    imag_id->set_definition((Definition) DF_TYPE);
+    imag_id->set_typespec(imag_type);
 
     // Type boolean.
     boolean_id = symtab_stack->enter_local("boolean");
