@@ -16,6 +16,7 @@
 #include "../SymTabStack.h"
 #include "../typeimpl/TypeSpecImpl.h"
 #include "../../DataValue.h"
+#include "../SymTabFactory.h"
 
 namespace wci { namespace intermediate { namespace symtabimpl {
 
@@ -109,10 +110,18 @@ void Predefined::initialize_types(SymTabStack *symtab_stack)
     
     // Complex type.
     complex_id = symtab_stack->enter_local("complex");
-    complex_type = TypeFactory::create_type((TypeForm) TF_SCALAR);
+    complex_type = TypeFactory::create_type((TypeForm) TF_RECORD);
     complex_type->set_identifier(complex_id);
     complex_id->set_definition((Definition) DF_TYPE);
     complex_id->set_typespec(complex_type);
+    
+    SymTab *csymtab = SymTabFactory::create_symtab(0);
+    SymTabEntry *re_id = csymtab->enter("re");
+    SymTabEntry *im_id = csymtab->enter("im");
+    re_id->set_typespec(real_type);
+    im_id->set_typespec(real_type);
+    complex_type->set_attribute((TypeKey) RECORD_SYMTAB, new TypeValue(csymtab));
+   
 }
 
 void Predefined::initialize_constants(SymTabStack *symtab_stack)

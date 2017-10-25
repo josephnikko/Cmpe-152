@@ -18,6 +18,13 @@ using namespace wci::intermediate;
 using namespace wci::intermediate::symtabimpl;
 using namespace wci::intermediate::typeimpl;
 
+/*
+bool TypeChecker::is_complex(TypeSpec *typespec)
+{
+    return is_integer(typespec);
+}
+*/
+
 bool TypeChecker::is_integer(TypeSpec *typespec)
 {
     return    (typespec != nullptr)
