@@ -16,6 +16,7 @@
 #include "../SymTabStack.h"
 #include "../typeimpl/TypeSpecImpl.h"
 #include "../../DataValue.h"
+#include "../SymTabFactory.h"
 
 namespace wci { namespace intermediate { namespace symtabimpl {
 
@@ -31,6 +32,7 @@ TypeSpec *Predefined::real_type;
 TypeSpec *Predefined::boolean_type;
 TypeSpec *Predefined::char_type;
 TypeSpec *Predefined::undefined_type;
+TypeSpec *Predefined::complex_type;
 
 // Predefined identifiers.
 SymTabEntry *Predefined::integer_id;
@@ -60,6 +62,7 @@ SymTabEntry *Predefined::sqr_id;
 SymTabEntry *Predefined::sqrt_id;
 SymTabEntry *Predefined::succ_id;
 SymTabEntry *Predefined::trunc_id;
+SymTabEntry *Predefined::complex_id;
 
 void Predefined::initialize(SymTabStack *symtab_stack)
 {
@@ -104,6 +107,24 @@ void Predefined::initialize_types(SymTabStack *symtab_stack)
 
     // Undefined type.
     undefined_type = TypeFactory::create_type((TypeForm) TF_SCALAR);
+    
+    // Complex type.
+    complex_id = symtab_stack->enter_local("complex");
+    complex_type = TypeFactory::create_type((TypeForm) TF_RECORD);
+    complex_type->set_identifier(complex_id);
+    complex_id->set_definition((Definition) DF_TYPE);
+    complex_id->set_typespec(complex_type);
+    SymTab *csymtab = SymTabFactory::create_symtab(0);
+    complex_type->set_attribute((TypeKey) RECORD_SYMTAB, new TypeValue(csymtab));
+
+    // Complex fields re and im.
+    SymTabEntry *re_id = csymtab->enter("re");
+    SymTabEntry *im_id = csymtab->enter("im");
+    re_id->set_typespec(real_type);
+    im_id->set_typespec(real_type);
+    re_id->set_definition((Definition) DF_FIELD);
+    im_id->set_definition((Definition) DF_FIELD);    
+   
 }
 
 void Predefined::initialize_constants(SymTabStack *symtab_stack)
