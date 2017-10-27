@@ -19,14 +19,6 @@ using namespace wci::intermediate;
 class TypeChecker
 {
 public:
-
-    /**
-     * Check if a type specification is complex.
-     * @param typespec the type specification to check.
-     * @return true if complex, else false.
-     */
-    static bool is_complex(TypeSpec *typespec);
-
     /**
      * Check if a type specification is integer.
      * @param typespec the type specification to check.
@@ -103,15 +95,6 @@ public:
      */
     static bool are_comparison_compatible(TypeSpec *typespec1,
                                           TypeSpec *typespec2);
-
-    /**
-     * Check if two type specifications are complex.
-     * @param typespec1 the first type specification to check.
-     * @param typespec2 the second type specification to check.
-     * @return true if the types are both complex, else false.
-     */
-    static bool are_both_complex(TypeSpec *typespec1,
-                     		 TypeSpec *typespec2);
 };
 
 }}}  // namespace wci::intermediate::typeimpl

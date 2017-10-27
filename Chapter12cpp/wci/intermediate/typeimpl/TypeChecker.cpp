@@ -18,12 +18,12 @@ using namespace wci::intermediate;
 using namespace wci::intermediate::symtabimpl;
 using namespace wci::intermediate::typeimpl;
 
-// Added for complex type
+/*
 bool TypeChecker::is_complex(TypeSpec *typespec)
 {
-    return    (typespec != nullptr)
-           && (typespec->base_type() == Predefined::complex_type);
+    return is_integer(typespec);
 }
+*/
 
 bool TypeChecker::is_integer(TypeSpec *typespec)
 {
@@ -147,13 +147,6 @@ bool TypeChecker::are_comparison_compatible(TypeSpec *typespec1,
     }
 
     return compatible;
-}
-
-// Added for complex type
-bool TypeChecker::are_both_complex(TypeSpec *typespec1,
-                     		   TypeSpec *typespec2)
-{
-    return is_complex(typespec1) && is_complex(typespec2);
 }
 
 }}}  // namespace wci::intermediate::typeimpl
