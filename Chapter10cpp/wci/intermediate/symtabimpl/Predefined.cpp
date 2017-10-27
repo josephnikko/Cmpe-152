@@ -93,6 +93,20 @@ void Predefined::initialize_types(SymTabStack *symtab_stack)
     char_id->set_definition((Definition) DF_TYPE);
     char_id->set_typespec(char_type);
 
+    // Type complex.
+    complex_id = symtab_stack->enter_local("complex");
+    complex_type = TypeFactory::create_type((TypeForm) TF SCALAR);
+    complex_type->set_identifier(complex_id);
+    complex_id->set_definition((Definition) DF_TYPE);
+    complex_id->set_typespec(complex_type);
+
+    SymTab *csymtab = SymTabFactory::crate_symtab(0);
+    SymTabEntry *re_id = csymtab->enter("re");
+    SymTabEntry *imag_id = csymtab->enter("im");
+    re_id->set_typespec(real_type);
+    imag_id->set_typespec(real_type);
+    complex_type->set_attribute((TypeKey) RECORD_SYMTAB, new TypeValue(csymtab));
+
     // Undefined type.
     undefined_type = TypeFactory::create_type((TypeForm) TF_SCALAR);
 }
@@ -122,3 +136,5 @@ void Predefined::initialize_constants(SymTabStack *symtab_stack)
 }
 
 }}}  // namespace wci::intermediate::symtabimpl
+
+
