@@ -114,13 +114,16 @@ void Predefined::initialize_types(SymTabStack *symtab_stack)
     complex_type->set_identifier(complex_id);
     complex_id->set_definition((Definition) DF_TYPE);
     complex_id->set_typespec(complex_type);
-    
     SymTab *csymtab = SymTabFactory::create_symtab(0);
+    complex_type->set_attribute((TypeKey) RECORD_SYMTAB, new TypeValue(csymtab));
+
+    // Complex fields re and im.
     SymTabEntry *re_id = csymtab->enter("re");
     SymTabEntry *im_id = csymtab->enter("im");
     re_id->set_typespec(real_type);
     im_id->set_typespec(real_type);
-    complex_type->set_attribute((TypeKey) RECORD_SYMTAB, new TypeValue(csymtab));
+    re_id->set_definition((Definition) DF_FIELD);
+    im_id->set_definition((Definition) DF_FIELD);    
    
 }
 
